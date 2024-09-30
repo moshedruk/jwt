@@ -13,23 +13,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const filedatalayer_1 = require("../config/filedatalayer");
-const TodoModel_1 = __importDefault(require("../types/models/TodoModel"));
-class TodoService {
-    static createNewTodo(newtodo) {
+const userModel_1 = __importDefault(require("../types/models/userModel"));
+class UserService {
+    static signup(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { title } = newtodo;
-            if (!title) {
-                throw new Error("Title is required");
+            try {
+                const { userName, password } = user;
+                if (!userName || !password) {
+                    return {
+                        err: true,
+                        message: "Missing required fields",
+                    };
+                }
+                const newuser = new userModel_1.default(userName);
+                yield newuser.hashPassword(password);
+                let users = yield (0, filedatalayer_1.getFileData)("user");
+                if (!users)
+                    users = [];
+                users.push(newuser);
+                yield (0, filedatalayer_1.saveFileData)("user", users);
+                return {
+                    err: false,
+                    message: "User created successfully",
+                    data: { id: newuser._id },
+                    status: 201
+                };
             }
-            // const hashPassword:string = await bcrypt.hash(newtodo.password,10)
-            const todo = new TodoModel_1.default(title);
-            let todos = yield (0, filedatalayer_1.getFileData)("todo");
-            if (!todos)
-                todos = [];
-            // push
-            todos.push(todo);
-            // write to file
-            return yield (0, filedatalayer_1.saveFileData)("todo", todos);
+            catch (err) {
+                return {
+                    err: true,
+                    status: 500,
+                    message: "Internal Server Error",
+                };
+            }
         });
     }
     static getAllTodos() {
@@ -41,4 +57,4 @@ class TodoService {
         });
     }
 }
-exports.default = TodoService;
+exports.default = UserService;

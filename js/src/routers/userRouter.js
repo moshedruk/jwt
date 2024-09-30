@@ -12,24 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const uuid_1 = require("uuid");
-const bcrypt_1 = __importDefault(require("bcrypt"));
-class User {
-    constructor(userName) {
-        this.userName = userName;
-        this._id = (0, uuid_1.v4)();
+exports.handlSignupRequset = void 0;
+const userService_1 = __importDefault(require("../services/userService"));
+const handlSignupRequset = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield userService_1.default.signup(req.body);
+        if (!result.err) {
+            res.status(result.status).json(result);
+        }
     }
-    hashPassword(password) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.password = yield bcrypt_1.default.hash(password, 10);
-        });
+    catch (err) {
+        console.log(err);
     }
-    comparePassword(password) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!this.password)
-                throw new Error("Password not set");
-            return yield bcrypt_1.default.compare(password, this.password);
-        });
-    }
-}
-exports.default = User;
+});
+exports.handlSignupRequset = handlSignupRequset;
