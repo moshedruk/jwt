@@ -4,7 +4,7 @@ import 'dotenv/config'
 
 
 import todoController from './src/controllers/todoController'
-// import userController from './src/controllers/userController'
+ import userController from './src/controllers/userController'
 // import aothController from './src/controllers/authController'
 import cookieParser from 'cookie-parser'
 
@@ -14,7 +14,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use('/todo',todoController)
-// app.use('/user',userController)
+app.use('/user',userController)
 // app.use('/auth',aothController)
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!');

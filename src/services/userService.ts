@@ -9,7 +9,7 @@ import User from "../types/models/userModel";
 
 export default class UserService{
     public static async signup(user: NewSignupDTO): Promise<ResponsData<{id:string}>> {
-        try{
+        try{           
 
             const {userName,password} = user 
             if (!userName||!password) {

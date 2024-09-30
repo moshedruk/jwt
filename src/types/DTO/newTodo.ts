@@ -1,6 +1,5 @@
-export default interface TodoDTO {    
-    id: string;    
+export default interface TodoDTO {         
     title: string
     completed?: boolean 
-    userId?: string   
+    userId: string   
 }

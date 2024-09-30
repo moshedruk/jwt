@@ -14,31 +14,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const todoService_1 = __importDefault(require("../services/todoService"));
+const todoRouter_1 = require("../routers/todoRouter");
 const router = express_1.default.Router();
+router.post('/', todoRouter_1.handlpostTodoRequset);
 router.patch('/:id', () => { });
 router.delete('/:id', () => { });
-router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const result = yield todoService_1.default.createNewTodo(req.body);
-        if (result) {
-            res.status(201).json({
-                err: false,
-                message: 'Login Successful',
-                data: undefined
-            });
-        }
-        else {
-            throw new Error("cant save user");
-        }
-    }
-    catch (err) {
-        res.status(404).json({
-            err: true,
-            message: err || 'Invalid',
-            data: null
-        });
-    }
-}));
+// router.post('/', async (req:Request,res:Response):Promise<void> =>{
+//     try{
+//         const result = await todoService.createNewTodo(req.body)
+//         if(result){
+//         res.status(201).json({
+//             err: false,
+//             message: 'Login Successful',  
+//             data:undefined 
+//         })}
+//         else{
+//             throw new Error("cant save user")
+//         }
+//     }
+//     catch(err){
+//         res.status(404).json({
+//             err: true,
+//             message: err|| 'Invalid',
+//             data: null
+//         })
+//     } 
+// })
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield todoService_1.default.getAllTodos();

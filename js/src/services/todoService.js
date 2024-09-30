@@ -15,23 +15,52 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const filedatalayer_1 = require("../config/filedatalayer");
 const TodoModel_1 = __importDefault(require("../types/models/TodoModel"));
 class TodoService {
-    static createNewTodo(newtodo) {
+    static createNewTodo(todo) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { title } = newtodo;
-            if (!title) {
-                throw new Error("Title is required");
+            try {
+                const { title, completed, userId } = todo;
+                if (!title || !userId) {
+                    return {
+                        err: true,
+                        message: "Missing required fields",
+                    };
+                }
+                const newtodo = new TodoModel_1.default(title, userId);
+                let todos = yield (0, filedatalayer_1.getFileData)("todo");
+                if (!todos)
+                    todos = [];
+                todos.push(newtodo);
+                yield (0, filedatalayer_1.saveFileData)("todo", todos);
+                return {
+                    err: false,
+                    message: "todo created successfully",
+                    data: newtodo,
+                    status: 201
+                };
             }
-            // const hashPassword:string = await bcrypt.hash(newtodo.password,10)
-            const todo = new TodoModel_1.default(title);
-            let todos = yield (0, filedatalayer_1.getFileData)("todo");
-            if (!todos)
-                todos = [];
-            // push
-            todos.push(todo);
-            // write to file
-            return yield (0, filedatalayer_1.saveFileData)("todo", todos);
+            catch (err) {
+                return {
+                    err: true,
+                    status: 500,
+                    message: "Internal Server Error",
+                };
+            }
         });
     }
+    // public static async createNewTodo(newtodo: NewTodoDTO): Promise<boolean> {
+    //     const {title} = newtodo
+    //     if (!title){
+    //         throw new Error("Title is required")
+    //     }
+    //     // const hashPassword:string = await bcrypt.hash(newtodo.password,10)
+    //     const todo: Todo = new Todo(title);
+    //     let todos: Todo[] = await getFileData<Todo>("todo") as Todo[];
+    //     if(!todos) todos = [];
+    //     // push
+    //     todos.push(todo);
+    //     // write to file
+    //     return await saveFileData<todo>("todo", todos);
+    // }
     static getAllTodos() {
         return __awaiter(this, void 0, void 0, function* () {
             let todos = yield (0, filedatalayer_1.getFileData)("todo");

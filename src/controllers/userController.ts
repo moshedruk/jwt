@@ -5,10 +5,12 @@ import NewTodoDTO from '../types/DTO/newTodo'
 import { handlSignupRequset } from '../routers/userRouter'
 
 
-const router:Router = exp.Router()
+const router:Router = exp.Router();
 
 
-router.post('/signup',()=>{handlSignupRequset})
+router.post('/signup',handlSignupRequset)
+
+
 
 router.get('/profile',()=>{})
 

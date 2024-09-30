@@ -16,10 +16,12 @@ exports.handlSignupRequset = void 0;
 const userService_1 = __importDefault(require("../services/userService"));
 const handlSignupRequset = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log("fgf");
         const result = yield userService_1.default.signup(req.body);
         if (!result.err) {
             res.status(result.status).json(result);
         }
+        console.log(result);
     }
     catch (err) {
         console.log(err);
