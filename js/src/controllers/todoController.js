@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const todoService_1 = __importDefault(require("../services/todoService"));
 const router = express_1.default.Router();
+router.patch('/:id', () => { });
+router.delete('/:id', () => { });
 router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield todoService_1.default.createNewTodo(req.body);

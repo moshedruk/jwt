@@ -6,6 +6,9 @@ import NewTodoDTO from '../DTO/newTodo'
 const router:Router = exp.Router()
 
 
+router.patch('/:id',()=>{})
+router.delete('/:id',()=>{})
+
 router.post('/', async (req:Request,res:Response):Promise<void> =>{
     try{
         const result = await todoService.createNewTodo(req.body)
